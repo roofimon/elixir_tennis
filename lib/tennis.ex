@@ -1,19 +1,19 @@
 defmodule TennisRule do
 
-  def get_player_score(score) do
-    score |> Enum.map(fn({_, v}) -> tuple_size(v) end) |> List.to_tuple
+  def get_player_score(score_card) do
+    score_card |> Enum.map(fn({k, v}) -> {k, tuple_size(v)} end) |> Enum.into(%{})
   end
 
-  def announce(score) when elem(score, 0) >= 0 and elem(score, 1) >= 0 do
+  def announce(score) do
     score_mapping = {"Love", "Fifteen", "Thirty", "Forty"}
-    {server, player} = score
+    {server, player} = {score.server, score.player}
     case {server, player} do
       {0, 0} -> "Start Game!"
       {0, y} when y <= 3 -> "Love - "<> elem(score_mapping, y)
       {x, 0} when x <= 3 -> elem(score_mapping, x)<>" - Love"
       {x, y} when x == y and x < 3 and y < 3 -> elem(score_mapping, x)<>" - All"
       {x, y} when x <= 3 and y <= 3 and x + y < 6 -> elem(score_mapping, x)<>" - "<>elem(score_mapping, y)
-      {3, 3} -> "Deauce"
+      {x, y} when x ==y and y >=3 -> "Deuce"
       {4, 3} -> "Advantage to Server"
       {3, 4} -> "Advantage to Plaer"
       {x, 4} when x <= 2 -> "Game Set Player Win"
@@ -23,4 +23,5 @@ defmodule TennisRule do
       _ -> score
     end
   end
+
 end
