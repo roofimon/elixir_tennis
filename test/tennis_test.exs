@@ -12,6 +12,45 @@ defmodule TennisRuleTest do
     assert "Fifteen - Love" == score_card |> TennisRule.get_player_score |> TennisRule.announce
   end
 
+  test "Given the score is Fifteen - Love When player get score Then judge should announce Fifteen - All" do
+    score_card = Score.game_start
+    score_card = set_score_to_server(score_card, 1)
+
+    score_card = Score.to_player score_card
+
+    assert "Fifteen - All" == score_card |> TennisRule.get_player_score |> TennisRule.announce
+  end
+
+  test "Given the score is Fifteen - All When sever get score Then judge should announce Thirty - Fifteen" do
+    score_card = Score.game_start
+    score_card = set_score_to_server(score_card, 1)
+    score_card = set_score_to_player(score_card, 1)
+
+    score_card = Score.to_server score_card
+
+    assert "Thirty - Fifteen" == score_card |> TennisRule.get_player_score |> TennisRule.announce
+  end
+
+  test "Given the score is Thirty - Fifteen When player get score Then judge should announce Thirty - All" do
+    score_card = Score.game_start
+    score_card = set_score_to_server(score_card, 2)
+    score_card = set_score_to_player(score_card, 1)
+
+    score_card = Score.to_player score_card
+
+    assert "Thirty - All" == score_card |> TennisRule.get_player_score |> TennisRule.announce
+  end
+
+  test "Given the score is Thirty - All When server get score Then judge should announce Forty - Thirty" do
+    score_card = Score.game_start
+    score_card = set_score_to_server(score_card, 2)
+    score_card = set_score_to_player(score_card, 2)
+
+    score_card = Score.to_server score_card
+
+    assert "Forty - Thirty" == score_card |> TennisRule.get_player_score |> TennisRule.announce
+  end
+
   test "Given the score is Forty-Thirty and the player get score Then judge should announce Deuce" do
     score_card = %{player: {}, server: {}}
     score_card = set_score_to_server(score_card, 3)
@@ -21,6 +60,7 @@ defmodule TennisRuleTest do
 
     assert "Deuce" == score_card |> TennisRule.get_player_score |> TennisRule.announce
   end
+
 
   def set_score_to_server(score_card, n) when n <=1 do
     Score.to_server score_card
