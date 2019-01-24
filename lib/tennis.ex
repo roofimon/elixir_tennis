@@ -15,7 +15,7 @@ defmodule TennisRule do
       {x, y} when x <= 3 and y <= 3 and x + y < 6 -> elem(score_mapping, x)<>" - "<>elem(score_mapping, y)
       {x, y} when x ==y and y >=3 -> "Deuce"
       {4, 3} -> "Advantage to Server"
-      {3, 4} -> "Advantage to Plaer"
+      {3, 4} -> "Advantage to Player"
       {x, 4} when x <= 2 -> "Game Set Player Win"
       {4, x} when x <= 2 -> "Game Set Server Win"
       {5, 3} -> "Game Set Server Win"

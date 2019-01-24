@@ -61,6 +61,46 @@ defmodule TennisRuleTest do
     assert "Deuce" == score_card |> TennisRule.get_player_score |> TennisRule.announce
   end
 
+  test "Given the score is Deuce and the server get score Then judge should announce Advantage to Server" do
+    score_card = %{player: {}, server: {}}
+    score_card = set_score_to_server(score_card, 3)
+    score_card = set_score_to_player(score_card, 3)
+
+    score_card = Score.to_server score_card
+
+    assert "Advantage to Server" == score_card |> TennisRule.get_player_score |> TennisRule.announce
+  end    
+  
+  test "Given the score is Advantage to Server and the player get score Then judge should announce Deuce" do
+    score_card = %{player: {}, server: {}}
+    score_card = set_score_to_server(score_card, 4)
+    score_card = set_score_to_player(score_card, 3)
+
+    score_card = Score.to_player score_card
+
+    assert "Deuce" == score_card |> TennisRule.get_player_score |> TennisRule.announce
+  end
+
+
+  test "Given the score is Advantage to Server and the server get score Then judge should announce Game Set Server Win" do
+    score_card = %{player: {}, server: {}}
+    score_card = set_score_to_server(score_card, 4)
+    score_card = set_score_to_player(score_card, 3)
+
+    score_card = Score.to_server score_card
+
+    assert "Game Set Server Win" == score_card |> TennisRule.get_player_score |> TennisRule.announce
+  end  
+
+  test "Given the score is Deuce and the player get score Then judge should announce Advantage to Player" do
+    score_card = %{player: {}, server: {}}
+    score_card = set_score_to_server(score_card, 3)
+    score_card = set_score_to_player(score_card, 3)
+
+    score_card = Score.to_player score_card
+
+    assert "Advantage to Player" == score_card |> TennisRule.get_player_score |> TennisRule.announce
+  end  
 
   def set_score_to_server(score_card, n) when n <=1 do
     Score.to_server score_card
