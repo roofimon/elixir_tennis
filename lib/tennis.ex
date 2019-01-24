@@ -14,12 +14,12 @@ defmodule TennisRule do
       {x, y} when x == y and x < 3 and y < 3 -> elem(score_mapping, x)<>" - All"
       {x, y} when x <= 3 and y <= 3 and x + y < 6 -> elem(score_mapping, x)<>" - "<>elem(score_mapping, y)
       {x, y} when x ==y and y >=3 -> "Deuce"
-      {4, 3} -> "Advantage to Server"
-      {3, 4} -> "Advantage to Player"
+      {x, y} when x >= 3 and x-y == 1 -> "Advantage to Server"
+      {x, y} when x >= 3 and y-x == 1 -> "Advantage to Player"
       {x, 4} when x <= 2 -> "Game Set Player Win"
       {4, x} when x <= 2 -> "Game Set Server Win"
-      {5, 3} -> "Game Set Server Win"
-      {3, 5} -> "Game Set Player Win"
+      {x, y} when x > 3 and x-y == 2 -> "Game Set Server Win"
+      {x, y} when y > 3 and x-x == 2 -> "Game Set Player Win"
       _ -> score
     end
   end
